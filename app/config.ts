@@ -1,0 +1,1 @@
+export const BASE_API_URL = 'https://codingcase.bluesky-ff1656b7.westeurope.azurecontainerapps.io';

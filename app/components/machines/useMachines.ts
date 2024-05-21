@@ -4,7 +4,7 @@ import { PhoenixWebsocket } from 'phoenix-websocket';
 
 import type { Machine, MachineEvent } from '@/app/components/types';
 
-import { BASE_API_URL } from '@/app/config';
+import { BASE_API_DOMAIN } from '@/app/config';
 
 const SOCKET_API_PATH = '/socket';
 const TOPIC = 'events';
@@ -17,7 +17,7 @@ export function useMachines(machinesAtFirstLoad: Machine[]) {
 
   React.useEffect(() => {
     async function receiveEvent() {
-      const socket = new PhoenixWebsocket(`wss://codingcase.bluesky-ff1656b7.westeurope.azurecontainerapps.io/socket/`);
+      const socket = new PhoenixWebsocket(`wss://${BASE_API_DOMAIN}${SOCKET_API_PATH}`);
       await socket.connect();
       socket.subscribeToTopic(TOPIC, undefined, {
         [MESSAGE]: (event: any) => {

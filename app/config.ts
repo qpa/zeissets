@@ -1,1 +1,1 @@
-export const BASE_API_URL = 'https://codingcase.bluesky-ff1656b7.westeurope.azurecontainerapps.io';
+export const BASE_API_DOMAIN = 'codingcase.bluesky-ff1656b7.westeurope.azurecontainerapps.io';

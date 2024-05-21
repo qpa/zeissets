@@ -38,7 +38,7 @@ export function useMachines(machinesAtFirstLoad: Machine[]) {
       });
     }
     receiveEvent();
-  }, []);
+  }, [selectedMachine?.id]);
 
   return { machines, selectedMachine, setSelectedMachine };
 }

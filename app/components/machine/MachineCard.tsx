@@ -9,6 +9,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
+import Stack from '@mui/material/Stack';
 import Skeleton from '@mui/material/Skeleton';
 
 import type { MachineDetails } from '@/app/components/types';
@@ -68,17 +69,11 @@ export default function MachineCard({ isLoading, machine, onClose }: MachineCard
             </ListItem>
             <List sx={{ maxHeight: '30vh', overflowY: 'auto' }}>
               {isLoading ? (
-                <Box
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignItems: 'flex-start',
-                    gap: 1
-                  }}>
-                  <Skeleton variant="circular" width={64} height={40} />
-                  <Skeleton variant="rectangular" width={180} height={20} />
-                </Box>
+                <Stack useFlexGap spacing={1}>
+                  <Skeleton variant="rounded" width={245} height={20} />
+                  <Skeleton variant="rounded" width={245} height={20} />
+                  <Skeleton variant="rounded" width={245} height={20} />
+                </Stack>
               ) : (
                 events.map((event) => {
                   return (

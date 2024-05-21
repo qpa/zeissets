@@ -14,16 +14,38 @@ import StatusChip from '@/app/components/StatusChip';
 import type { Machine, Status } from '@/app/components/types';
 import { MACHINE_ATTRIBUTES } from '@/app/components/utils';
 import MachineDialog from '@/app/components/machine/MachineDialog';
-import { useMachines } from './useMachines';
+import { useMachineEvent } from '@/app/components/machine/useMachineEvent';
 
 export type MachinesTableProps = { machines: Machine[] };
 
 export default function MachinesTable({ machines: machinesProp }: MachinesTableProps) {
-  const { machines, selectedMachine, setSelectedMachine } = useMachines(machinesProp);
+  const machineEvent = useMachineEvent();
+
+  const [machines, setMachines] = React.useState(machinesProp);
+  const [selectedMachine, setSelectedMachine] = React.useState<Machine>();
+
+  React.useEffect(() => {
+    setMachines((prevMachines) =>
+      prevMachines.map((machine) => {
+        const updatedMachine = { ...machine };
+        if (machine.id === machineEvent?.machine_id) {
+          updatedMachine.status = machineEvent.status;
+          if (selectedMachine?.id === updatedMachine.id) {
+            setSelectedMachine(updatedMachine);
+          }
+        }
+        return updatedMachine;
+      })
+    );
+  }, [machineEvent, selectedMachine?.id]);
 
   function handleRowClick(machine: Machine) {
     setSelectedMachine((prevSelectedMachine) => (prevSelectedMachine?.id === machine.id ? undefined : machine));
   }
+
+  const handleClose = React.useCallback(() => {
+    setSelectedMachine(undefined);
+  }, []);
 
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -81,7 +103,7 @@ export default function MachinesTable({ machines: machinesProp }: MachinesTableP
             </TableBody>
           </Table>
         </TableContainer>
-        <MachineDialog machine={selectedMachine} onClose={() => setSelectedMachine(undefined)} />
+        {selectedMachine && <MachineDialog machine={selectedMachine} onClose={handleClose} />}
       </Box>
     </Paper>
   );

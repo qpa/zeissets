@@ -14,8 +14,8 @@ export function useMachineEvent() {
   const [machineEvent, setMachineEvent] = React.useState<MachineEvent>();
 
   React.useEffect(() => {
+    const socket = new PhoenixWebsocket(`wss://${BASE_API_DOMAIN}${SOCKET_API_PATH}`);
     async function receiveEvent() {
-      const socket = new PhoenixWebsocket(`wss://${BASE_API_DOMAIN}${SOCKET_API_PATH}`);
       await socket.connect();
       socket.subscribeToTopic(TOPIC, undefined, {
         [MESSAGE]: (event: any) => {
@@ -23,8 +23,11 @@ export function useMachineEvent() {
           setMachineEvent(mEvent);
         }
       });
+      return socket;
     }
-    receiveEvent();
+    return function () {
+      socket.disconnect();
+    };
   }, []);
 
   return machineEvent;

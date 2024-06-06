@@ -25,6 +25,8 @@ export function useMachineEvent() {
       });
       return socket;
     }
+    receiveEvent();
+    
     return function () {
       socket.disconnect();
     };
